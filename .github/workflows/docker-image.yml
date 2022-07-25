@@ -29,4 +29,4 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/eshop-product-service:latest
     - name: Pull image
-      run: docker pull ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/eshop-product-service:latest
+      run: docker pull ghcr.io/bac123456/eshop-product-service:latest
