@@ -28,3 +28,5 @@ jobs:
 #           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/eshop-product-service:latest
+    - name: Pull image
+      run: docker pull ghcr.io/OWNER/${{ secrets.DOCKER_HUB_USERNAME }}/eshop-product-service:latest
