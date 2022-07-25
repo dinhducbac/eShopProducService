@@ -31,4 +31,4 @@ jobs:
     - name: login github
       run: echo ${{ secrets.GIT_HUB_TOKEN }} | docker login ghcr.io -u USERNAME --password-stdin
     - name: pull image
-      run: docker pull ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/eshop-product-service:latest
+      run: docker pull ghcr.io/OWNER/IMAGE_NAME:latest
