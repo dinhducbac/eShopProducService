@@ -21,14 +21,15 @@ jobs:
       with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-    - name: Build and push
+    - name: Push image
       uses: docker/build-push-action@v3
       with:
           context: ./Exercise2
 #           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/eshop-product-service:latest
-    - name: login github
-      run: echo ${{ secrets.GIT_HUB_TOKEN }} | docker login ghcr.io -u USERNAME --password-stdin
-    - name: pull image
-      run: docker pull ghcr.io/bac123456/eshop-product-service:latest
+             
+#     - name: login github
+#       run: echo ${{ secrets.GIT_HUB_TOKEN }} | docker login ghcr.io -u USERNAME --password-stdin
+#     - name: pull image
+#       run: docker pull ghcr.io/bac123456/eshop-product-service:latest
