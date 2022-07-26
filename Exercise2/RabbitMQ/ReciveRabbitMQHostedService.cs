@@ -17,34 +17,34 @@ namespace EmployeeManagerment.RabbitMQ
 {
     public class ReciveRabbitMQHostedService : BackgroundService
     {
-        public readonly IConfiguration _configuration;
-        private IConnection _connection;
+        //public readonly IConfiguration _configuration;
+        //private IConnection _connection;
         private IModel _channel;
-       // private readonly DefaultObjectPool<IModel> _objectPool;
+        private readonly DefaultObjectPool<IModel> _objectPool;
         public IServiceScopeFactory _serviceScopeFactory;
         private eShopDBContext _dbContext;
-        public ReciveRabbitMQHostedService(IConfiguration configuration, /*IPooledObjectPolicy<IModel> objectPolicy,*/
+        public ReciveRabbitMQHostedService(/*IConfiguration configuration,*/ IPooledObjectPolicy<IModel> objectPolicy,
             IServiceScopeFactory serviceScopeFactory)
         {
-            _configuration = configuration;
-            //_objectPool = new DefaultObjectPool<IModel>(objectPolicy, Environment.ProcessorCount * 2);
+            //_configuration = configuration;
+            _objectPool = new DefaultObjectPool<IModel>(objectPolicy, Environment.ProcessorCount * 2);
             _serviceScopeFactory = serviceScopeFactory;
             InitRabbitMQ();          
         }
 
         private void InitRabbitMQ()
         {
-            var factory = new ConnectionFactory()
-            {
-                HostName = _configuration.GetSection("RabbitMqConnection")["HostName"],
-                UserName = _configuration.GetSection("RabbitMqConnection")["UserName"],
-                Password = _configuration.GetSection("RabbitMqConnection")["Password"],
-                Port = 5672,
-                VirtualHost = "/",
-            };
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
-            //_channel = _objectPool.Get();
+            //var factory = new ConnectionFactory()
+            //{
+            //    HostName = _configuration.GetSection("RabbitMqConnection")["HostName"],
+            //    UserName = _configuration.GetSection("RabbitMqConnection")["UserName"],
+            //    Password = _configuration.GetSection("RabbitMqConnection")["Password"],
+            //    Port = 5672,
+            //    VirtualHost = "/",
+            //};
+            //_connection = factory.CreateConnection();
+            //_channel = _connection.CreateModel();
+            _channel = _objectPool.Get();
             try
             {
                 _channel.ExchangeDeclarePassive("changeAmount");
@@ -57,7 +57,7 @@ namespace EmployeeManagerment.RabbitMQ
                 }
             }
             catch {}
-            _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
+            //_connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -110,7 +110,7 @@ namespace EmployeeManagerment.RabbitMQ
         public override void Dispose()
         {
             _channel.Close();
-            _connection.Close();
+            //_connection.Close();
             base.Dispose();
         }
         public class ChangeAmountRequest 
